@@ -1,0 +1,30 @@
+<ng-template appPlaceHolder></ng-template>
+<div class="row">
+    <div class="col-xs-12 col-md-6 col-md-offset-3">
+        <!-- <div class="alert alert-danger" *ngIf="error">
+            <p>{{error}}</p>
+        </div> -->
+        <div *ngIf="isLoading" style="text-align:center;">
+            <app-loading-spinner></app-loading-spinner>
+        </div>
+        <form [formGroup]="AuthForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="email">E-Mail</label>
+                <input type="email" class="form-control" id="email" formControlName="email">
+                <small class="text-danger" *ngIf="!AuthForm.get('email').untouched && !AuthForm.get('email').dirty"  >Please enter your email</small>
+                <small class="text-danger" *ngIf="AuthForm.get('email').dirty && AuthForm.get('email').invalid"  >Enter a valid email</small>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" formControlName="password">
+                <small class="text-danger" *ngIf="!AuthForm.get('password').untouched && !AuthForm.get('password').dirty"  >Please enter your password</small>
+                <small class="text-danger" *ngIf="AuthForm.get('password').invalid && (!AuthForm.get('password').untouched && AuthForm.get('password').dirty)" >Please check your password length</small>
+            </div>
+            <div>
+                <button class="btn btn-primary" type="submit" [disabled]="!AuthForm.valid">{{'Login'}}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
