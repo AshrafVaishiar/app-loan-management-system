@@ -10,10 +10,21 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addNewLoan"
-                    type="submit" *ngIf="IsAdmin">Add New Loan</button>
-            </div>
+                    type="submit" *ngIf="IsAdmin" style="padding-bottom: 50px;width: 126px;height: 29px;padding-top: 0px;">Add New Loan</button>
+            </div>  
+        </div>
+        <div class="container-fluid">
+            <button type="button" class="btn btn-outline-secondary bi bi-box-arrow-right" style="margin-left: 700px;" (click)="onLogOut()">LogOut</button>
+            
         </div>
     </nav>
+
+    <nav class="navbar navbar-light bg-light">
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="search loan" aria-label="Search">
+            <div class="col-xm-12"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button></div>
+          </form>
+      </nav>
 
 
 
@@ -65,8 +76,8 @@
               <td>{{loan.loanTerm}}</td>
               <td>{{loan.loanAmount}}</td>
               <td>
-                  <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editLoan" (click)="onEditLoan(loan)">Edit Loan</button>
-                  <button type="button" class="btn btn-outline-danger" (click)="onDeleteLoan(loan)">Delete Loan</button>
+                  <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editLoan" (click)="onEditLoan(loan)" *ngIf="IsAdmin">Edit Loan</button>
+                  <button type="button" class="btn btn-outline-danger" (click)="onDeleteLoan(loan)" *ngIf="IsAdmin">Delete Loan</button>
               </td>
   
             </tr>

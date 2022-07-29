@@ -4,8 +4,8 @@ import { Router } from "@angular/router";
 import { DashboardService } from "./dashboard.service";
 import { Loan } from '../Shared/models/addLoan.model';
 import { AlertComponent } from "../Shared/alert/alert.component";
-import { AuthComponent } from "../auth/auth.component";
 import { observable, Observable, Subscribable, Subscription } from "rxjs";
+import { AuthService } from "../auth/auth.service";
 
 @Component({
     selector: 'app-dash',
@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit {
 
     constructor(private router: Router,
         private dashService: DashboardService,
-        private authComponent: AuthComponent) {
+        private authService: AuthService) {
         this.router.getCurrentNavigation().extras.state;
         if (this.userData) {
             this.IsAdmin = this.userData.userType === 'admin' ? !this.IsAdmin : this.IsAdmin;
@@ -90,10 +90,13 @@ export class DashboardComponent implements OnInit {
             this.getAllLoans();
             console.log("from delete res:", res);
             alert("Are You Sure?");
-            //this.authComponent.showErrorAlert("msg");
         }, (err) => {
             console.log("from delete err:", err);
         });
+    }
+
+    onLogOut() {
+        this.authService.logout();
     }
 
     private initForm() {
