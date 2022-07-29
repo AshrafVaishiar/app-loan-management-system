@@ -14,7 +14,7 @@ export interface AuthResponseData {
 export class AuthService {
     loginURL: string = "http://localhost:37326/api/Login";
     user = new BehaviorSubject<User>(null);
-    expiresIn = 300; // auto-logout after 5 min
+    expiresIn = 1200; // auto-logout after 20 mins
     constructor(private http: HttpClient, private router: Router) {
 
     }
@@ -81,7 +81,6 @@ export class AuthService {
       }
 
     autoLogOut(expirationDuration: number) {
-        console.log(expirationDuration);
         this.tokenExpirationTimer = setTimeout(() => {
             this.logout();
         }, expirationDuration);
@@ -102,7 +101,8 @@ export class AuthService {
         userID: string,
         userType: string
     ) {
-        const expirationDate = new Date(new Date().getTime() + this.expiresIn*1000); // 5min
+        const expirationDate = new Date(new Date().getTime() + this.expiresIn*1000);
+        console.log(expirationDate); // 5min
         const user = new User(userID, userType, expirationDate);
         this.user.next(user);
         this.autoLogOut(this.expiresIn*1000);
