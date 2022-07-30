@@ -10,10 +10,21 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addNewLoan"
-                    type="submit">Add New Loan</button>
-            </div>
+                    type="submit" *ngIf="IsAdmin" style="padding-bottom: 50px;width: 126px;height: 29px;padding-top: 0px;">Add New Loan</button>
+            </div>  
+        </div>
+        <div class="container-fluid">
+            <button type="button" class="btn btn-outline-secondary bi bi-box-arrow-right" style="margin-left: 700px;" (click)="onLogOut()">LogOut</button>
+            
         </div>
     </nav>
+
+    <nav class="navbar navbar-light bg-light">
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="search loan" aria-label="Search">
+            <div class="col-xm-12"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button></div>
+          </form>
+      </nav>
 
 
 
@@ -43,72 +54,150 @@
         </tbody>
       </table> -->
 
+      <!-- Table of loans -->
+      <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+              <th scope="col">Borrower's First Name</th>
+              <th scope="col">Borrower's Last Name</th>
+              <th scope="col">Address</th>
+              <th scope="col">Loan Type</th>
+              <th scope="col">Loan Term</th>
+              <th scope="col">Loan Amount</th>
+              <th colspan="2" class="table-active" *ngIf="IsAdmin">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="table-hover">
+            <tr *ngFor="let loan of loanList">
+              <td>{{loan.firstName}}</td>
+              <td>{{loan.lastName}}</td>
+              <td>{{loan.address}}</td>
+              <td>{{loan.loanType}}</td>
+              <td>{{loan.loanTerm}}</td>
+              <td>{{loan.loanAmount}}</td>
+              <td>
+                  <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editLoan" (click)="onEditLoan(loan)" *ngIf="IsAdmin">Edit Loan</button>
+                  <button type="button" class="btn btn-outline-danger" (click)="onDeleteLoan(loan)" *ngIf="IsAdmin">Delete Loan</button>
+              </td>
+  
+            </tr>
+            
+          </tbody>
+      </table>
+
 
     <!-- Add New Loan modal -->
     <div class="modal fade" id="addNewLoan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New Loan</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Loan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <form [formGroup]="addNewLoanFrom">
+                        <div class="mb-3">
+                            <input type="hidden" formControlName="loanID" class="form-control" id="loanID">
+                        </div>
 
-                    <form>
                         <div class="mb-3">
                             <label for="firstName" class="form-label">Borrower's First Name </label>
-                            <input type="text" formControlName="firstName" class="form-control" id="firstName"
-                                >
+                            <input type="text" formControlName="firstName" class="form-control" id="firstName">
                         </div>
 
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Borrower's Last Name </label>
+                            <input type="text" formControlName="lastName" class="form-control" id="lastName">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Property Address</label>
+                            <input type="text" formControlName="address" class="form-control" id="address">
+                        </div>
+
+                        <label for="loanDetails" class="form-label">Loan Details</label>
+                        <hr>
+                        <div class="mb-3">
+                            <label for="loanType" class="form-label"> Loan Type </label>
+                            <select class="form-select" formControlName="loanType" id="loanType" aria-label="Loan Type">
+                                <option selected>select</option>
+                                <option value="1">Confirming</option>
+                                <option value="2">Non-confirming</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loanTerm" class="form-label"> Loan Term </label>
+                            <input type="number" formControlName="loanTerm" class="form-control" id="loanTerm">
+                        </div>
+                        <div class="mb-3">
+                            <label for="loanAmount" class="form-label"> Loan Amount </label>
+                            <input type="number" formControlName="loanAmount" class="form-control" id="loanAmount">
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Add Loan</button>
+                            <button type="button" class="btn btn-primary"  (click)="onAddLoan()" data-bs-dismiss="modal">Add Loan</button>
                         </div>
                     </form>
-
                 </div>
-
             </div>
         </div>
     </div>
 
 
-    <!-- Edit employee modal -->
-    <!-- <div class="modal fade" id="editEmployee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- Edit Loan modal -->
+    <div class="modal fade" id="editLoan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit employee details</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Loan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <form [formGroup]="addNewLoanFrom">
+                        <div class="mb-3">
+                            <input type="hidden" formControlName="loanID" class="form-control" id="loanID">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">Borrower's First Name </label>
+                            <input type="text" formControlName="firstName" class="form-control" id="firstName">
+                        </div>
 
-                    <form [formGroup]="empDetail">
                         <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Name </label>
-                            <input type="text" formControlName="name" class="form-control" id="name"
-                                aria-describedby="emailHelp">
+                            <label for="lastName" class="form-label">Borrower's Last Name </label>
+                            <input type="text" formControlName="lastName" class="form-control" id="lastName">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Property Address</label>
+                            <input type="text" formControlName="address" class="form-control" id="address">
+                        </div>
+
+                        <label for="loanDetails" class="form-label">Loan Details</label>
+                        <hr>
+                        <div class="mb-3">
+                            <label for="loanType" class="form-label"> Loan Type </label>
+                            <select class="form-select" formControlName="loanType" id="loanType" aria-label="Loan Type">
+                                <option selected>select</option>
+                                <option value="1">Confirming</option>
+                                <option value="2">Non-confirming</option>
+                            </select>
                         </div>
                         <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Email </label>
-                            <input type="email" formControlName="email" class="form-control" id="email"
-                                aria-describedby="emailHelp">
+                            <label for="loanTerm" class="form-label"> Loan Term </label>
+                            <input type="number" formControlName="loanTerm" class="form-control" id="loanTerm">
                         </div>
                         <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Salary </label>
-                            <input type="text" formControlName="salary" class="form-control" id="email"
-                                aria-describedby="emailHelp">
+                            <label for="loanAmount" class="form-label"> Loan Amount </label>
+                            <input type="number" formControlName="loanAmount" class="form-control" id="loanAmount">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-outline-success" (click)="updateEmployee()"
-                                data-bs-dismiss="modal">Update </button>
+                            <button type="button" class="btn btn-outline-success" (click)="onUpdateLoan()" data-bs-dismiss="modal">Update</button>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 </div>

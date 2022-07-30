@@ -1,5 +1,5 @@
 import { state } from "@angular/animations";
-import { Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, ComponentFactoryResolver, Injectable, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
@@ -13,6 +13,7 @@ import { AuthResponseData, AuthService } from "./auth.service";
     templateUrl: './auth.component.html',
     styleUrls: ['./auth.component.css']
 })
+@Injectable({providedIn : 'root'})
 export class AuthComponent implements OnDestroy, OnInit {
     error: string | null = null;
     private closesub: Subscription;
@@ -51,9 +52,8 @@ export class AuthComponent implements OnDestroy, OnInit {
 
         authObs.subscribe(
             (responseData) => {
-                console.log(responseData);
                 this.isLoading = false;
-                this.router.navigate(['/dashboard'], {state : {responseData}});
+                this.router.navigate(['/dashboard']);
             },
             (errorMessage) => {
                 this.error = errorMessage;
@@ -64,7 +64,7 @@ export class AuthComponent implements OnDestroy, OnInit {
         this.AuthForm.reset();
     }
 
-    private showErrorAlert(message: string) {
+    public showErrorAlert(message: string) {
         //dynamically creating alert component
         const alertcompFactory =
             this.compFactoryResolver.resolveComponentFactory(AlertComponent);
