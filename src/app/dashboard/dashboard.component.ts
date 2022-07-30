@@ -18,6 +18,8 @@ export class DashboardComponent implements OnInit {
     loanList: Loan[];
     loanObj: Loan;
     IsAdmin = false;
+    searchValue: string;
+    searchOn: string;
     userData: {
         userID: string;
         userType: string;

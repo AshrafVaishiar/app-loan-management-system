@@ -21,38 +21,10 @@
 
     <nav class="navbar navbar-light bg-light">
         <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="search loan" aria-label="Search">
+            <input class="form-control mr-sm-2" type="search" placeholder="search by any of the below table columns" aria-label="Search" id="search" [(ngModel)]="searchValue" name="searchValue" style="width: 326px;">
             <div class="col-xm-12"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button></div>
           </form>
       </nav>
-
-
-
-    <!-- <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Employee ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Salary</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let employee of empList">
-            <td>{{employee.id}}</td>
-            <td>{{employee.name}}</td>
-            <td>{{employee.email}}</td>
-            <td>{{employee.salary}}</td>
-            <td>
-                <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editEmployee" (click)="editEmployee(employee)">Edit</button>
-                <button type="button" class="btn btn-outline-danger" (click)="deleteEmployee(employee)">Delete</button>
-            </td>
-
-          </tr>
-          
-        </tbody>
-      </table> -->
 
       <!-- Table of loans -->
       <table class="table table-hover table-striped">
@@ -68,7 +40,7 @@
             </tr>
           </thead>
           <tbody class="table-hover">
-            <tr *ngFor="let loan of loanList">
+            <tr *ngFor="let loan of loanList | searchfilter:searchValue:">
               <td>{{loan.firstName}}</td>
               <td>{{loan.lastName}}</td>
               <td>{{loan.address}}</td>
