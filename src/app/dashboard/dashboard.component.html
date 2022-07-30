@@ -10,52 +10,83 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addNewLoan"
-                    type="submit" *ngIf="IsAdmin" style="padding-bottom: 50px;width: 126px;height: 29px;padding-top: 0px;">Add New Loan</button>
-            </div>  
+                    type="submit" *ngIf="IsAdmin"
+                    style="padding-bottom: 50px;width: 126px;height: 29px;padding-top: 0px;">Add New Loan</button>
+            </div>
         </div>
         <div class="container-fluid">
-            <button type="button" class="btn btn-outline-secondary bi bi-box-arrow-right" style="margin-left: 700px;" (click)="onLogOut()">LogOut</button>
-            
+            <button type="button" class="btn btn-outline-secondary bi bi-box-arrow-right" style="margin-left: 700px;"
+                (click)="onLogOut()">LogOut</button>
+
         </div>
     </nav>
 
     <nav class="navbar navbar-light bg-light">
         <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="search by any of the below table columns" aria-label="Search" id="search" [(ngModel)]="searchValue" name="searchValue" style="width: 326px;">
-            <div class="col-xm-12"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button></div>
-          </form>
-      </nav>
+            <label for="name">SEARCH</label>
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">By : First Name</span>
+                </div>
+                <input type="search" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+                    [(ngModel)]="firstName" name="firstName">
+            </div>
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">By : Last Name</span>
+                </div>
+                <input type="search" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+                    [(ngModel)]="lastName" name="lastName">
+            </div>
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">By : Loan Number</span>
+                </div>
+                <input type="search" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+                    [(ngModel)]="loanNumber" name="loanNumber">
+            </div>
+            <!-- <input class="form-control mr-sm-2" type="search" placeholder="search by any of the below table columns"
+                aria-label="firstName" id="firstName" [(ngModel)]="firstName" name="firstName"> -->
+            <!-- <input class="form-control mr-sm-2" type="search" placeholder="search by any of the below table columns"
+                aria-label="lastName" id="lastName" [(ngModel)]="lastName" name="lastName"> -->
+        </form>
 
-      <!-- Table of loans -->
-      <table class="table table-hover table-striped">
+    </nav>
+
+    <!-- Table of loans -->
+    <table class="table table-hover table-striped">
         <thead>
             <tr>
-              <th scope="col">Borrower's First Name</th>
-              <th scope="col">Borrower's Last Name</th>
-              <th scope="col">Address</th>
-              <th scope="col">Loan Type</th>
-              <th scope="col">Loan Term</th>
-              <th scope="col">Loan Amount</th>
-              <th colspan="2" class="table-active" *ngIf="IsAdmin">Actions</th>
+                <th scope="col">#</th>
+                <th scope="col">Borrower's First Name</th>
+                <th scope="col">Borrower's Last Name</th>
+                <th scope="col">Address</th>
+                <th scope="col">Loan Type</th>
+                <th scope="col">Loan Term</th>
+                <th scope="col">Loan Amount</th>
+                <th colspan="2" class="table-active" *ngIf="IsAdmin">Actions</th>
             </tr>
-          </thead>
-          <tbody class="table-hover">
-            <tr *ngFor="let loan of loanList | searchfilter:searchValue:">
-              <td>{{loan.firstName}}</td>
-              <td>{{loan.lastName}}</td>
-              <td>{{loan.address}}</td>
-              <td>{{loan.loanType}}</td>
-              <td>{{loan.loanTerm}}</td>
-              <td>{{loan.loanAmount}}</td>
-              <td>
-                  <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editLoan" (click)="onEditLoan(loan)" *ngIf="IsAdmin">Edit Loan</button>
-                  <button type="button" class="btn btn-outline-danger" (click)="onDeleteLoan(loan)" *ngIf="IsAdmin">Delete Loan</button>
-              </td>
-  
+        </thead>
+        <tbody class="table-hover">
+            <tr *ngFor="let loan of loanList | searchfilter:[firstName, lastName, loanNumber]:['firstName','lastName', 'loanNumber'];">
+                <td>{{loan.loanNumber}}</td>
+                <td>{{loan.firstName}}</td>
+                <td>{{loan.lastName}}</td>
+                <td>{{loan.address}}</td>
+                <td>{{loan.loanType}}</td>
+                <td>{{loan.loanTerm}}</td>
+                <td>{{loan.loanAmount}}</td>
+                <td>
+                    <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal"
+                        data-bs-target="#editLoan" (click)="onEditLoan(loan)" *ngIf="IsAdmin">Edit Loan</button>
+                    <button type="button" class="btn btn-outline-danger" (click)="onDeleteLoan(loan)"
+                        *ngIf="IsAdmin">Delete Loan</button>
+                </td>
+
             </tr>
-            
-          </tbody>
-      </table>
+
+        </tbody>
+    </table>
 
 
     <!-- Add New Loan modal -->
@@ -70,6 +101,11 @@
                     <form [formGroup]="addNewLoanFrom">
                         <div class="mb-3">
                             <input type="hidden" formControlName="loanID" class="form-control" id="loanID">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">Loan Number</label>
+                            <input type="number" formControlName="loanNumber" class="form-control" id="loanNumber">
                         </div>
 
                         <div class="mb-3">
@@ -107,7 +143,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary"  (click)="onAddLoan()" data-bs-dismiss="modal">Add Loan</button>
+                            <button type="button" class="btn btn-primary" (click)="onAddLoan()"
+                                data-bs-dismiss="modal">Add Loan</button>
                         </div>
                     </form>
                 </div>
@@ -129,7 +166,7 @@
                         <div class="mb-3">
                             <input type="hidden" formControlName="loanID" class="form-control" id="loanID">
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="firstName" class="form-label">Borrower's First Name </label>
                             <input type="text" formControlName="firstName" class="form-control" id="firstName">
@@ -165,7 +202,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-outline-success" (click)="onUpdateLoan()" data-bs-dismiss="modal">Update</button>
+                            <button type="button" class="btn btn-outline-success" (click)="onUpdateLoan()"
+                                data-bs-dismiss="modal">Update</button>
                         </div>
                     </form>
                 </div>

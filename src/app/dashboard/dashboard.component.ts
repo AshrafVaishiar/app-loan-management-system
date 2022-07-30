@@ -18,8 +18,9 @@ export class DashboardComponent implements OnInit {
     loanList: Loan[];
     loanObj: Loan;
     IsAdmin = false;
-    searchValue: string;
-    searchOn: string;
+    firstName: string;
+    lastName: string;
+    loanNumber: number;
     userData: {
         userID: string;
         userType: string;
@@ -104,6 +105,7 @@ export class DashboardComponent implements OnInit {
     private initForm() {
         this.addNewLoanFrom = new FormGroup({
             loanID: new FormControl(null),
+            loanNumber: new FormControl(null),
             firstName: new FormControl(null, Validators.required),
             lastName: new FormControl(null, Validators.required),
             address: new FormControl(null, Validators.required),
