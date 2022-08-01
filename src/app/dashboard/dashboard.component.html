@@ -98,53 +98,61 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form [formGroup]="addNewLoanFrom">
+                    <form [formGroup]="addNewLoanForm">
                         <div class="mb-3">
                             <input type="hidden" formControlName="loanID" class="form-control" id="loanID">
                         </div>
 
                         <div class="mb-3">
-                            <label for="firstName" class="form-label">Loan Number</label>
+                            <label for="firstName" class="form-label">Loan Number<span class="required">*</span></label>
                             <input type="number" formControlName="loanNumber" class="form-control" id="loanNumber">
+                            <small class="text-danger" *ngIf="addNewLoanForm.get('loanNumber').touched && addNewLoanForm.get('loanNumber').invalid"  >Loan Number Is Required</small>
                         </div>
 
                         <div class="mb-3">
-                            <label for="firstName" class="form-label">Borrower's First Name </label>
+                            <label for="firstName" class="form-label">Borrower's First Name <span class="required">*</span></label>
                             <input type="text" formControlName="firstName" class="form-control" id="firstName">
+                            <small class="text-danger" *ngIf="addNewLoanForm.get('firstName').touched && addNewLoanForm.get('firstName').invalid"  >Borrower's First Name Is Required</small>
                         </div>
 
                         <div class="mb-3">
-                            <label for="lastName" class="form-label">Borrower's Last Name </label>
+                            <label for="lastName" class="form-label">Borrower's Last Name <span class="required">*</span></label>
                             <input type="text" formControlName="lastName" class="form-control" id="lastName">
+                            <small class="text-danger" *ngIf="addNewLoanForm.get('lastName').touched && addNewLoanForm.get('lastName').invalid"  >Borrower's Last Name Is Required</small>
                         </div>
 
                         <div class="mb-3">
-                            <label for="address" class="form-label">Property Address</label>
+                            <label for="address" class="form-label">Property Address <span class="required">*</span></label>
                             <input type="text" formControlName="address" class="form-control" id="address">
+                            <small class="text-danger" *ngIf="addNewLoanForm.get('address').touched && addNewLoanForm.get('address').invalid"  >Property Address Is Required</small>
                         </div>
 
                         <label for="loanDetails" class="form-label">Loan Details</label>
                         <hr>
                         <div class="mb-3">
-                            <label for="loanType" class="form-label"> Loan Type </label>
+                            <label for="loanType" class="form-label"> Loan Type <span class="required">*</span></label>
                             <select class="form-select" formControlName="loanType" id="loanType" aria-label="Loan Type">
-                                <option selected>select</option>
                                 <option value="1">Confirming</option>
                                 <option value="2">Non-confirming</option>
                             </select>
+                            <small class="text-danger" *ngIf="addNewLoanForm.get('loanType').touched && addNewLoanForm.get('loanType').invalid">Please Select Loan Type</small>
                         </div>
                         <div class="mb-3">
-                            <label for="loanTerm" class="form-label"> Loan Term </label>
-                            <input type="number" formControlName="loanTerm" class="form-control" id="loanTerm">
+                            <label for="loanTerm" class="form-label"> Loan Term (In Years)<span class="required">*</span></label>
+                            <input type="number" formControlName="loanTerm" class="form-control" id="loanTerm" pattern="[1-9]+">
+                            <small class="text-danger" *ngIf="addNewLoanForm.get('loanTerm').touched && addNewLoanForm.get('loanTerm').invalid && !addNewLoanForm.get('loanTerm').dirty"  >Please enter loan term </small>
+                            <small class="text-danger" *ngIf="addNewLoanForm.get('loanTerm').touched &&  addNewLoanForm.get('loanTerm').dirty && addNewLoanForm.get('loanTerm').invalid"  >Please specify a valid loan term </small>
                         </div>
                         <div class="mb-3">
-                            <label for="loanAmount" class="form-label"> Loan Amount </label>
-                            <input type="number" formControlName="loanAmount" class="form-control" id="loanAmount">
+                            <label for="loanAmount" class="form-label"> Loan Amount $<span class="required">*</span></label>
+                            <input type="number" formControlName="loanAmount" class="form-control" id="loanAmount" pattern="[1-9]+">
+                            <small class="text-danger" *ngIf="addNewLoanForm.get('loanAmount').touched && addNewLoanForm.get('loanAmount').invalid && !addNewLoanForm.get('loanAmount').dirty"  >Please enter loan amount </small>
+                            <small class="text-danger" *ngIf="addNewLoanForm.get('loanAmount').touched &&  addNewLoanForm.get('loanAmount').dirty && addNewLoanForm.get('loanAmount').invalid"  >Please specify a valid loan amount </small>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary" (click)="onAddLoan()"
-                                data-bs-dismiss="modal">Add Loan</button>
+                                data-bs-dismiss="modal" [disabled]="!addNewLoanForm.valid">Add Loan</button>
                         </div>
                     </form>
                 </div>
@@ -162,43 +170,56 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form [formGroup]="addNewLoanFrom">
+                    <form [formGroup]="addNewLoanForm">
                         <div class="mb-3">
                             <input type="hidden" formControlName="loanID" class="form-control" id="loanID">
                         </div>
 
                         <div class="mb-3">
-                            <label for="firstName" class="form-label">Borrower's First Name </label>
+                            <label for="firstName" class="form-label">Loan Number<span class="required">*</span></label>
+                            <input type="number" formControlName="loanNumber" class="form-control" id="loanNumber">
+                            <small class="text-danger" *ngIf="addNewLoanForm.get('loanNumber').touched && addNewLoanForm.get('loanNumber').invalid"  >Loan Number Is Required</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">Borrower's First Name <span class="required">*</span></label>
                             <input type="text" formControlName="firstName" class="form-control" id="firstName">
+                            <small class="text-danger" *ngIf="addNewLoanForm.get('firstName').touched && addNewLoanForm.get('firstName').invalid"  >Borrower's First Name Is Required</small>
                         </div>
 
                         <div class="mb-3">
-                            <label for="lastName" class="form-label">Borrower's Last Name </label>
+                            <label for="lastName" class="form-label">Borrower's Last Name <span class="required">*</span></label>
                             <input type="text" formControlName="lastName" class="form-control" id="lastName">
+                            <small class="text-danger" *ngIf="addNewLoanForm.get('lastName').touched && addNewLoanForm.get('lastName').invalid"  >Borrower's Last Name Is Required</small>
                         </div>
 
                         <div class="mb-3">
-                            <label for="address" class="form-label">Property Address</label>
+                            <label for="address" class="form-label">Property Address <span class="required">*</span></label>
                             <input type="text" formControlName="address" class="form-control" id="address">
+                            <small class="text-danger" *ngIf="addNewLoanForm.get('address').touched && addNewLoanForm.get('address').invalid"  >Property Address Is Required</small>
                         </div>
 
                         <label for="loanDetails" class="form-label">Loan Details</label>
                         <hr>
                         <div class="mb-3">
-                            <label for="loanType" class="form-label"> Loan Type </label>
+                            <label for="loanType" class="form-label"> Loan Type <span class="required">*</span></label>
                             <select class="form-select" formControlName="loanType" id="loanType" aria-label="Loan Type">
-                                <option selected>select</option>
                                 <option value="1">Confirming</option>
                                 <option value="2">Non-confirming</option>
                             </select>
+                            <small class="text-danger" *ngIf="addNewLoanForm.get('loanType').touched && addNewLoanForm.get('loanType').invalid">Please Select Loan Type</small>
                         </div>
                         <div class="mb-3">
-                            <label for="loanTerm" class="form-label"> Loan Term </label>
-                            <input type="number" formControlName="loanTerm" class="form-control" id="loanTerm">
+                            <label for="loanTerm" class="form-label"> Loan Term (In Years)<span class="required">*</span></label>
+                            <input type="number" formControlName="loanTerm" class="form-control" id="loanTerm" pattern="[1-9]+">
+                            <small class="text-danger" *ngIf="addNewLoanForm.get('loanTerm').touched && addNewLoanForm.get('loanTerm').invalid && !addNewLoanForm.get('loanTerm').dirty"  >Please enter loan term </small>
+                            <small class="text-danger" *ngIf="addNewLoanForm.get('loanTerm').touched &&  addNewLoanForm.get('loanTerm').dirty && addNewLoanForm.get('loanTerm').invalid"  >Please specify a valid loan term </small>
                         </div>
                         <div class="mb-3">
-                            <label for="loanAmount" class="form-label"> Loan Amount </label>
-                            <input type="number" formControlName="loanAmount" class="form-control" id="loanAmount">
+                            <label for="loanAmount" class="form-label"> Loan Amount $<span class="required">*</span></label>
+                            <input type="number" formControlName="loanAmount" class="form-control" id="loanAmount" pattern="[1-9]+">
+                            <small class="text-danger" *ngIf="addNewLoanForm.get('loanAmount').touched && addNewLoanForm.get('loanAmount').invalid && !addNewLoanForm.get('loanAmount').dirty"  >Please enter loan amount </small>
+                            <small class="text-danger" *ngIf="addNewLoanForm.get('loanAmount').touched &&  addNewLoanForm.get('loanAmount').dirty && addNewLoanForm.get('loanAmount').invalid"  >Please specify a valid loan amount </small>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -13,7 +13,7 @@ import { AuthService } from "../auth/auth.service";
     styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-    addNewLoanFrom: FormGroup;
+    addNewLoanForm: FormGroup;
     @Output() edit = new EventEmitter<Loan>();
     loanList: Loan[];
     loanObj: Loan;
@@ -42,9 +42,9 @@ export class DashboardComponent implements OnInit {
     }
 
     onAddLoan() {
-        this.addNewLoanFrom.controls['loanID'].setValue('_' + Math.random().toString(36).substr(2, 9));
-        console.log("from add", this.addNewLoanFrom.value);
-        this.dashService.addNewLoan(this.addNewLoanFrom.value).subscribe(res => {
+        this.addNewLoanForm.controls['loanID'].setValue('_' + Math.random().toString(36).substr(2, 9));
+        console.log("from add", this.addNewLoanForm.value);
+        this.dashService.addNewLoan(this.addNewLoanForm.value).subscribe(res => {
             this.getAllLoans();
         }, (err) => {
             console.log("Error while adding data");
@@ -53,13 +53,14 @@ export class DashboardComponent implements OnInit {
 
     onEditLoan(loan: Loan) {
         console.log("from on edit", loan);
-        this.addNewLoanFrom.controls['loanID'].setValue(loan.loanID);
-        this.addNewLoanFrom.controls['firstName'].setValue(loan.firstName);
-        this.addNewLoanFrom.controls['lastName'].setValue(loan.lastName);
-        this.addNewLoanFrom.controls['address'].setValue(loan.address);
-        this.addNewLoanFrom.controls['loanType'].setValue(loan.loanType);
-        this.addNewLoanFrom.controls['loanTerm'].setValue(loan.loanTerm);
-        this.addNewLoanFrom.controls['loanAmount'].setValue(loan.loanAmount);
+        this.addNewLoanForm.controls['loanID'].setValue(loan.loanID);
+        this.addNewLoanForm.controls['loanNumber'].setValue(loan.loanNumber);
+        this.addNewLoanForm.controls['firstName'].setValue(loan.firstName);
+        this.addNewLoanForm.controls['lastName'].setValue(loan.lastName);
+        this.addNewLoanForm.controls['address'].setValue(loan.address);
+        this.addNewLoanForm.controls['loanType'].setValue(loan.loanType);
+        this.addNewLoanForm.controls['loanTerm'].setValue(loan.loanTerm);
+        this.addNewLoanForm.controls['loanAmount'].setValue(loan.loanAmount);
         this.loanObj = loan;
     }
 
@@ -72,13 +73,14 @@ export class DashboardComponent implements OnInit {
     }
 
     onUpdateLoan() {
-        this.loanObj.loanID = this.addNewLoanFrom.value.loanID;
-        this.loanObj.firstName = this.addNewLoanFrom.value.firstName;
-        this.loanObj.lastName = this.addNewLoanFrom.value.lastName;
-        this.loanObj.address = this.addNewLoanFrom.value.address;
-        this.loanObj.loanAmount = this.addNewLoanFrom.value.loanAmount;
-        this.loanObj.loanTerm = this.addNewLoanFrom.value.loanTerm;
-        this.loanObj.loanType = this.addNewLoanFrom.value.loanType;
+        this.loanObj.loanID = this.addNewLoanForm.value.loanID;
+        this.loanObj.loanNumber = this.addNewLoanForm.value.loanNumber;
+        this.loanObj.firstName = this.addNewLoanForm.value.firstName;
+        this.loanObj.lastName = this.addNewLoanForm.value.lastName;
+        this.loanObj.address = this.addNewLoanForm.value.address;
+        this.loanObj.loanAmount = this.addNewLoanForm.value.loanAmount;
+        this.loanObj.loanTerm = this.addNewLoanForm.value.loanTerm;
+        this.loanObj.loanType = this.addNewLoanForm.value.loanType;
         console.log(this.loanObj.firstName);
         this.dashService.updateLoan(this.loanObj).subscribe((res) => {
             console.log("successful", res);
@@ -103,15 +105,15 @@ export class DashboardComponent implements OnInit {
     }
 
     private initForm() {
-        this.addNewLoanFrom = new FormGroup({
+        this.addNewLoanForm = new FormGroup({
             loanID: new FormControl(null),
-            loanNumber: new FormControl(null),
+            loanNumber: new FormControl(null, Validators.required),
             firstName: new FormControl(null, Validators.required),
             lastName: new FormControl(null, Validators.required),
             address: new FormControl(null, Validators.required),
             loanType: new FormControl(null, Validators.required),
             loanTerm: new FormControl(null, Validators.required),
-            loanAmount: new FormControl(null, Validators.required),
+            loanAmount: new FormControl(null, [Validators.required, Validators.min(1)]),
         })
     }
 }
