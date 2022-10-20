@@ -1,5 +1,6 @@
 import {
     HttpHandler,
+    HttpHeaders,
     HttpInterceptor,
     HttpParams,
     HttpRequest,
@@ -19,7 +20,8 @@ import {
             return next.handle(request);
           }
           const modifiedReq = request.clone({
-            params: new HttpParams().set('auth', user.userID),
+            //params: new HttpParams().set('Authorization', "bearer" + user.token),
+            headers: new HttpHeaders().set('authorization', "Bearer " + user.token)
           });
           return next.handle(modifiedReq);
         })

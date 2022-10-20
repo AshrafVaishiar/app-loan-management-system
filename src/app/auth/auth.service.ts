@@ -5,18 +5,20 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { User } from "./user.model";
 
 export interface AuthResponseData {
-    userID: string; //	The user id  of the user.
-    userType: string; //Whether admin / normal user
+    id: string; //	The user id  of the user.
+    userName: string; //Whether admin / normal user
+    email: string; //email id of the logged in user
+    token: string; // jwt token string
 }
 
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    loginURL: string = "http://localhost:37326/api/Login";
+    loginURL: string = "https://localhost:7280/login";
     user = new BehaviorSubject<User>(null);
     expiresIn = 1200; // auto-logout after 20 mins
     constructor(private http: HttpClient, private router: Router) {
-
+        this.initLoadedUser();
     }
 
     private tokenExpirationTimer: any;
@@ -24,17 +26,16 @@ export class AuthService {
     login(email: string, password: string) {
         return this.http
             .post<AuthResponseData>(this.loginURL, {
-                userID: email,
-                userPassword: password
+                email: email,
+                password: password
             })
             .pipe(
-                catchError(this.handleError),
                 tap((responseData) => {
                     this.handleAuthentication(
-                        responseData.userID,
-                        responseData.userType
+                        responseData.token
                     );
-                })
+                }),
+                catchError(this.handleError)
             );
     }
 
@@ -56,6 +57,23 @@ export class AuthService {
         return throwError(errorMsg);
     }
 
+    initLoadedUser() {
+        const userData: {
+            token: string;
+        } = JSON.parse(localStorage.getItem('userData'));
+
+        if (!userData) {
+            return;
+        }
+
+        const loadedUser = new User(
+            userData.token
+        );
+
+        if (loadedUser.token) {
+          this.user.next(loadedUser);
+        }
+    }
     autoLogin() {
         const userData: {
           userID: string;
@@ -65,19 +83,20 @@ export class AuthService {
         if (!userData) {
           return;
         }
-        const loadedUser = new User(
-          userData.userID,
-          userData.userType,
-          new Date(userData._ExpirationDate)
-        );
+
+        // const loadedUser = new User(
+        //   userData.userID,
+        //   userData.userType,
+        //   new Date(userData._ExpirationDate)
+        // );
     
-        if (loadedUser.userID) {
-          this.user.next(loadedUser);
-          const exxpirationDuration =
-            new Date(userData._ExpirationDate).getTime() -
-            new Date().getTime();
-          this.autoLogOut(exxpirationDuration);
-        }
+        // if (loadedUser.userID) {
+        //   this.user.next(loadedUser);
+        //   const exxpirationDuration =
+        //     new Date(userData._ExpirationDate).getTime() -
+        //     new Date().getTime();
+        //   this.autoLogOut(exxpirationDuration);
+        // }
       }
 
     autoLogOut(expirationDuration: number) {
@@ -98,14 +117,14 @@ export class AuthService {
     }
 
     private handleAuthentication(
-        userID: string,
-        userType: string
+        token: string
     ) {
-        const expirationDate = new Date(new Date().getTime() + this.expiresIn*1000);
-        console.log(expirationDate); // 5min
-        const user = new User(userID, userType, expirationDate);
+        //const expirationDate = new Date(new Date().getTime() + this.expiresIn*1000);
+        //console.log(expirationDate); // 5min
+        //const user = new User(userID, userType, expirationDate);
+        const user = new User(token);
         this.user.next(user);
-        this.autoLogOut(this.expiresIn*1000);
+        //this.autoLogOut(this.expiresIn*1000);
         localStorage.setItem('userData', JSON.stringify(user));
     }
 

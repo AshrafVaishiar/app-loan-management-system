@@ -2,17 +2,17 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Loan Management System</a>
+            <a class="navbar-brand" href="#">Learning Management System</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addNewLoan"
                     type="submit" *ngIf="IsAdmin"
                     style="padding-bottom: 50px;width: 126px;height: 29px;padding-top: 0px;">Add New Loan</button>
-            </div>
+            </div> -->
         </div>
         <div class="container-fluid">
             <button type="button" class="btn btn-outline-secondary bi bi-box-arrow-right" style="margin-left: 700px;"
@@ -21,7 +21,7 @@
         </div>
     </nav>
 
-    <nav class="navbar navbar-light bg-light">
+    <!-- <nav class="navbar navbar-light bg-light">
         <form class="form-inline my-2 my-lg-0">
             <label for="name">SEARCH</label>
             <div class="input-group input-group-sm mb-3">
@@ -45,35 +45,33 @@
                 <input type="search" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
                     [(ngModel)]="loanNumber" name="loanNumber">
             </div>
-            <!-- <input class="form-control mr-sm-2" type="search" placeholder="search by any of the below table columns"
+            <input class="form-control mr-sm-2" type="search" placeholder="search by any of the below table columns"
                 aria-label="firstName" id="firstName" [(ngModel)]="firstName" name="firstName"> -->
             <!-- <input class="form-control mr-sm-2" type="search" placeholder="search by any of the below table columns"
-                aria-label="lastName" id="lastName" [(ngModel)]="lastName" name="lastName"> -->
+                aria-label="lastName" id="lastName" [(ngModel)]="lastName" name="lastName">
         </form>
-
-    </nav>
+    </nav>  -->
 
     <!-- Table of loans -->
     <table class="table table-hover table-striped">
         <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Borrower's First Name</th>
-                <th scope="col">Borrower's Last Name</th>
-                <th scope="col">Address</th>
-                <th scope="col">Loan Type</th>
-                <th scope="col">Loan Term</th>
+                <th scope="col">Course Name</th>
+                <th scope="col">Course Duration</th>
+                <th scope="col">Course Description</th>
+                <th scope="col">Course Technology</th>
+                <!-- <th scope="col">Loan Term</th>
                 <th scope="col">Loan Amount</th>
-                <th colspan="2" class="table-active" *ngIf="IsAdmin">Actions</th>
+                <th colspan="2" class="table-active" *ngIf="IsAdmin">Actions</th> -->
             </tr>
         </thead>
         <tbody class="table-hover">
-            <tr *ngFor="let loan of loanList | searchfilter:[firstName, lastName, loanNumber]:['firstName','lastName', 'loanNumber'];">
-                <td>{{loan.loanNumber}}</td>
-                <td>{{loan.firstName}}</td>
-                <td>{{loan.lastName}}</td>
-                <td>{{loan.address}}</td>
-                <td>{{loan.loanType}}</td>
+            <tr *ngFor="let course of courseList">
+                <td>{{course.courseName}}</td>
+                <td>{{course.courseDuration}}</td>
+                <td>{{course.courseDescription}}</td>
+                <td>{{course.courseTechnology}}</td>
+                <!-- <td>{{loan.loanType}}</td>
                 <td>{{loan.loanTerm}}</td>
                 <td>{{loan.loanAmount}}</td>
                 <td>
@@ -81,7 +79,7 @@
                         data-bs-target="#editLoan" (click)="onEditLoan(loan)" *ngIf="IsAdmin">Edit Loan</button>
                     <button type="button" class="btn btn-outline-danger" (click)="onDeleteLoan(loan)"
                         *ngIf="IsAdmin">Delete Loan</button>
-                </td>
+                </td> -->
 
             </tr>
 
@@ -90,7 +88,7 @@
 
 
     <!-- Add New Loan modal -->
-    <div class="modal fade" id="addNewLoan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="addNewLoan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -158,11 +156,11 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
 
     <!-- Edit Loan modal -->
-    <div class="modal fade" id="editLoan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="editLoan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -230,5 +228,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>

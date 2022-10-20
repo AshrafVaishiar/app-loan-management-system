@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { SharedModule } from './Shared/shared.module';
 import { SearchfilterPipe } from './searchfilter.pipe';
 import { FormsModule } from '@angular/forms';
+import { AuthInterceptorService } from './auth/auth-interceptor.service';
 
 @NgModule({
   declarations: [
